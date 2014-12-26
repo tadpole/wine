@@ -4,12 +4,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import itertools
 
-def get_group(labels, n):
-    group = [[] for i in range(n)]
-    for i, l in enumerate(labels):
-        group[l].append(i)
-    return group
-
 def minmax_distance(centers):
     re = 100000000.0
     for a, b in itertools.product(centers, centers):

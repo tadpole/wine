@@ -11,6 +11,7 @@ import random
 import pickle
 
 def init(deploy, caffemodel, mean):
+    '''init caffe'''
     net = caffe.Net(deploy, caffemodel)
     net.set_phase_test()
     net.set_mean('data', np.load(mean))
@@ -19,14 +20,16 @@ def init(deploy, caffemodel, mean):
     return net
 
 def get_feature(net, pics):
+    '''get output of caffe'''
     ims = map(lambda pic: caffe.io.load_image(pic), pics)
     out = net.forward_all(data=np.asarray(map(lambda im: net.preprocess('data', im), ims)))
     # return map(lambda d: map(lambda x: float(x[0][0]), d), out['ip1'])
     return np.squeeze(out[net.outputs[0]])
 
 def draw_pic(files, titles = [""]*10, sample = False):
+    '''draw 10 pictures in one screen'''
     plt.figure(figsize=(18, 8))
-    num = min(files, 10)
+    num = min(len(files), 10)
     if sample:
         fs = random.sample(files, num)
     else:
@@ -45,9 +48,18 @@ def draw_pic(files, titles = [""]*10, sample = False):
             print "IOError"
 
 def save_object(obj, name):
+    '''save python object'''
     with open(name, 'wb') as output:
         pickle.dump(obj, output, pickle.HIGHEST_PROTOCOL)
 
 def load_object(name):
+    '''load python object'''
     with open(name, 'rb') as input:
         return pickle.load(input)
+
+def get_group(labels, n):
+    '''get group by same element'''
+    group = [[] for i in range(n)]
+    for i, l in enumerate(labels):
+        group[l].append(i)
+    return group
