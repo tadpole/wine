@@ -15,8 +15,10 @@ if __name__ == '__main__':
     data = json.loads(open('data/features_0.json', 'r').read())
     name = np.array(data['name'])
     label_group = get_group(kmeans_labels, n)
+    print map(lambda x: len(x), label_group)
     if len(sys.argv) == 3:
         cluster_num = int(sys.argv[2])
+        print len(label_group[cluster_num])
         draw_pic(name[label_group[cluster_num]], sample = True)
         plt.show()
         exit()
