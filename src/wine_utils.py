@@ -39,6 +39,8 @@ def draw_pic(files, titles = [""]*10, sample = False):
             plt.title(titles[i])
             plt.gca().yaxis.set_major_locator(MultipleLocator(1000))
             plt.gca().xaxis.set_major_locator(MultipleLocator(1000))
+            plt.setp(plt.gca().get_xticklabels(), visible=False)
+            plt.setp(plt.gca().get_yticklabels(), visible=False)
         except IOError, e:
             print "IOError"
 
