@@ -7,6 +7,7 @@ from matplotlib.ticker import MultipleLocator, FuncFormatter
 import sys
 import csv
 import os
+import getpass
 
 def get_by_winery(cur, winery):
     count = cur.execute(
@@ -71,8 +72,9 @@ def do(result):
     return num
 
 try:
+    password = getpass.getpass('Enter password: ')
     conn = MySQLdb.connect(host='192.168.1.114', 
-            user='yunshitu', passwd='yunshitu_db', 
+            user='yunshitu', passwd=password, 
             db='imagedb', port=3306, charset='utf8')
     cur = conn.cursor()
     reader = csv.reader(open(csv_file))

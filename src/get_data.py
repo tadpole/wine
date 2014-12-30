@@ -5,6 +5,7 @@ from urllib import urlretrieve
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MultipleLocator, FuncFormatter
 import sys
+import getpass
 
 def get_one_pic(cur, winery_name, prefix_name):
     count = cur.execute(
@@ -84,9 +85,9 @@ http_head += 'vivino/'
 try:
     m = hashlib.md5()
     plt.figure(figsize=(18, 8))
-
+    password = getpass.getpass('Enter password: ')
     conn = MySQLdb.connect(host='192.168.1.114', 
-            user='yunshitu', passwd='yunshitu_db', 
+            user='yunshitu', passwd=password, 
             db='imagedb', port=3306, charset='utf8')
     cur = conn.cursor()
 
