@@ -7,6 +7,7 @@ import caffe
 import json
 import os
 from matplotlib.ticker import MultipleLocator, FuncFormatter
+from urllib import urlretrieve
 import random
 import pickle
 
@@ -63,3 +64,33 @@ def get_group(labels, n):
     for i, l in enumerate(labels):
         group[l].append(i)
     return group
+
+def check_img(f):
+    '''check whether an image is vaild'''
+    try:
+        pic = plt.imread(f)
+        return True
+    except IOError, e:
+        return False
+    except RuntimeError, e:
+        return False
+
+def download_from_data_server(result, data_dir):
+    '''download data from data-server'''
+    http_head = 'http://192.168.1.115/'
+    num = 0
+    for name, winery, source, wine_img in result:
+        remote_file = http_head+source+'/'+wine_img
+        # data_dir = '{}/{}_{}'.format(data_path, name, winery)
+        if not os.path.exists(data_dir):
+            os.mkdir(data_dir)
+        local_file = '{}/{}'.format(data_dir, wine_img.split("/")[-1])
+        if os.path.exists(local_file):
+            continue
+        urlretrieve(remote_file, local_file)
+        if not check_img(local_file):
+            os.remove(local_file)
+        else:
+            num += 1
+    return num
+
